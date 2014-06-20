@@ -57,6 +57,11 @@ static void * const keypath = (void*)&keypath;
     [self presentPopupView:popupViewController.view animationType:animationType dismissed:dismissed];
 }
 
+- (void) fadeOut
+{
+    [self dismissPopupViewControllerWithanimationType:MJPopupViewAnimationFade];
+}
+
 - (void)presentPopupViewController:(UIViewController*)popupViewController animationType:(MJPopupViewAnimation)animationType
 {
     [self presentPopupViewController:popupViewController animationType:animationType dismissed:nil];
@@ -67,6 +72,8 @@ static void * const keypath = (void*)&keypath;
     UIView *sourceView = [self topView];
     UIView *popupView = [sourceView viewWithTag:kMJPopupViewTag];
     UIView *overlayView = [sourceView viewWithTag:kMJOverlayViewTag];
+    
+    NSLog(@"bgview: %@", self.mj_popupBackgroundView);
     
     switch (animationType) {
         case MJPopupViewAnimationSlideBottomTop:
@@ -140,7 +147,7 @@ static void * const keypath = (void*)&keypath;
     [overlayView addSubview:popupView];
     [sourceView addSubview:overlayView];
     
-    [dismissButton addTarget:self action:@selector(dismissPopupViewControllerWithanimation:) forControlEvents:UIControlEventTouchUpInside];
+    //[dismissButton addTarget:self action:@selector(dismissPopupViewControllerWithanimation:) forControlEvents:UIControlEventTouchUpInside];
     switch (animationType) {
         case MJPopupViewAnimationSlideBottomTop:
         case MJPopupViewAnimationSlideBottomBottom:
@@ -341,6 +348,7 @@ static void * const keypath = (void*)&keypath;
     [UIView animateWithDuration:kPopupModalAnimationDuration animations:^{
         [self.mj_popupViewController viewWillDisappear:NO];
         self.mj_popupBackgroundView.alpha = 0.0f;
+        NSLog(@"bg view: %@", self.mj_popupBackgroundView);
         popupView.alpha = 0.0f;
     } completion:^(BOOL finished) {
         [popupView removeFromSuperview];
